@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Tea Nav</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f8f2ea;
+        color: #2d1b0f;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+      }
+
+      nav {
+        background: #ffffff;
+        border: 1px solid #e0d3c6;
+        border-radius: 8px;
+        padding: 16px 24px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      }
+
+      ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+      }
+
+      a {
+        text-decoration: none;
+        text-transform: capitalize;
+        color: inherit;
+        padding-bottom: 2px;
+        border-bottom: 1px solid transparent;
+      }
+
+      .gift-link {
+        color: #711e24;
+        position: relative;
+      }
+
+      .gift-link a {
+        position: relative;
+        display: inline-block;
+      }
+
+      .gift-icon {
+        position: absolute;
+        color: #90131b;
+        font-size: 1rem;
+        line-height: 1;
+        display: inline-block;
+        pointer-events: none;
+        animation: twinkle 4s ease-in-out infinite;
+      }
+      .gift-icon.star-left-top {
+        top: -6px;
+        left: -6px;
+        font-size: 0.5rem;
+        animation-delay: 0s;
+      }
+      .gift-icon.star-right-bottom {
+        top: 16px;
+        left: 92%;
+        font-size: 0.6rem;
+        animation-delay: 1s;
+      }
+      .gift-icon.star-right-top {
+        top: -5px;
+        left: 68%;
+        font-size: 0.4rem;
+        animation-delay: 3s;
+      }
+      .gift-icon.star-left-bottom {
+        top: 15px;
+        left: -4px;
+        font-size: 0.4rem;
+        animation-delay: 2s;
+      }
+
+      @keyframes twinkle {
+        0%,
+        15% {
+          opacity: 0;
+          transform: scale(0.9);
+          filter: brightness(0.85);
+        }
+        20%,
+        50% {
+          opacity: 1;
+          transform: scale(1.05);
+          filter: brightness(1.15);
+        }
+        55%,
+        100% {
+          opacity: 0;
+          transform: scale(0.9);
+          filter: brightness(0.85);
+        }
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav aria-label="Tea House navigation">
+      <ul>
+        <li><a href="#tea">Tea</a></li>
+        <li><a href="#snacks">Snacks</a></li>
+        <li class="gift-link">
+          <a href="#gift">
+            <span class="gift-icon star-left-top" aria-hidden="true">·</span>
+            <span class="gift-icon star-right-bottom" aria-hidden="true">✻</span>
+            <span class="gift-icon star-right-top" aria-hidden="true">✶</span>
+            <span class="gift-icon star-left-bottom" aria-hidden="true">✢</span>
+            Gift
+          </a>
+        </li>
+        <li><a href="#subscriptions">Subscriptions</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#learn">Learn</a></li>
+        <li><a href="#visit">Visit</a></li>
+      </ul>
+    </nav>
+    <script>
+      // Using the complete symmetrical pattern
+      const PATTERN = ["✢", "✶", "✻", "✽", "✻", "✶", "✢"];
+      const animatedIcons = document.querySelectorAll(".gift-icon");
+
+      animatedIcons.forEach((icon, index) => {
+        let currentIndex = index * 2 % PATTERN.length;
+        icon.textContent = PATTERN[currentIndex];
+        
+        // Calculate animation duration (4s) and visible phase (20% to 50% = 30% of 4s = 1.2s)
+        const animationDuration = 4000; // 4 seconds
+        const visibleStartPercent = 0.2; // 20%
+        const visibleEndPercent = 0.5; // 50%
+        const visibleDuration = (visibleEndPercent - visibleStartPercent) * animationDuration; // 1200ms
+        
+        // Start a continuous interval that changes icons
+        setInterval(() => {
+          // Get current animation progress
+          const computedStyle = window.getComputedStyle(icon);
+          const opacity = parseFloat(computedStyle.opacity);
+          
+          // Only change icon when it's visible (opacity > 0.5)
+          if (opacity > 0.5) {
+            currentIndex = (currentIndex + 1) % PATTERN.length;
+            icon.textContent = PATTERN[currentIndex];
+          }
+        }, 200); // Change icon every 150ms when visible
+      });
+    </script>
+  </body>
+</html>
